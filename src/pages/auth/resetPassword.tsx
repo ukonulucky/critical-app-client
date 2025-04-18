@@ -2,7 +2,7 @@
 import React from "react";
 import ResetPasswordComp from "../../components/resetPasswordComp";
 
-function resetPassword() {
+function ResetPassword() {
 
 
   return (
@@ -25,4 +25,4 @@ function resetPassword() {
   );
 }
 
-export default resetPassword;
+export default ResetPassword;

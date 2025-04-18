@@ -2,7 +2,7 @@
 import React from 'react'
 import VerifyCodeComp from '../../components/verifyCodeComp'
 
-function page() {
+function VerifyCode() {
 
     return (
         <div className="w-screen h-screen  flex flex-row ">
@@ -24,4 +24,4 @@ function page() {
     )
 }
 
-export default page
+export default VerifyCode
