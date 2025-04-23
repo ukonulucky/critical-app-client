@@ -176,9 +176,8 @@ export type BestSellingProductCardType = {
 
 /* api auth section */
 export type apiRegisterType= {
-    fullname: string,
+    fullName: string,
     email: string,
-    phone: string,
     password: string,
 }
   
@@ -190,7 +189,6 @@ export type apiLoginType = {
 
  export  interface signUpSchema {
     fullName: string,
-    phoneNumber: string,
     email: string,
     password: string
   }

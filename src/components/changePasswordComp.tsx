@@ -66,24 +66,7 @@ const ChangePasswordComp = () => {
     <div className="flex flex-col ">
       {/* show loader while making api call */}
       {loader && <LoadingScreen />}
-     {/*  <div className=" flex flex-row items-center space-x-2 ">
-        <div>
-          <image
-            src={"/images/logo.png"}
-            width={30}
-            height={31}
-            alt="quible logo"
-          />
-        </div>
-        <div>
-          <Image
-            src={"/images/Quible.png"}
-            width={77}
-            height={18.7}
-            alt="quible log"
-          />
-        </div>
-      </div> */}
+    
       <div className="text-gray-900 text-[26px] font-semibold font-['Inter'] leading-[35.10px] mt-12">
         Change Password
       </div>

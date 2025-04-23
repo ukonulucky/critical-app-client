@@ -1,64 +1,21 @@
 import * as yup from 'yup'
 
-export const userDataUpdateSchema = yup.object({
-    firstName: yup.string().required("First name is  required"),
-    lastName: yup.string().required('Last name is required'),
-  phoneNumber: yup.string().required('Phone number is reqjuired'),
-  email: yup.string().required('Phone number is reqjuired'),
-  image: yup.string().required("Image is required")
-})
-  
-
-
-export const addProductFormSchema = yup.object({
-  productImage: yup.string().required("Product image is required"), 
-  productName: yup.string().required('Product name is required'),
-  productCategory: yup.string().required('Product category is required'), 
-  productQuantity: yup.string().required('Product quantity is required'),
-  productSubCategory: yup.string().required('Product subcategory is required'), 
-  productPrice: yup.string().required('Product price is required'),
-  productDescription: yup.string().required("Product description is required"),
-  productGroup: yup.string().required("Product group is required"),
-})
-
-
-export const addProductFormSchema2 = yup.object({
-   productImage: yup.string().required("Product image is required"), 
-    productName: yup.string().required('Product name is required'),
-    productCategory: yup.string().required('Product category is required'), 
-    productQuantity: yup.string().required('Product quantity is required'),
-   productSubCategory: yup.string().required('Product subcategory is required'), 
-    productPrice: yup.string().required('Product price is required'),
-  productDescription: yup.string().required("Product description is required"),
-  productMinimumAmount: yup.string().required("Product minimum amount is required")
-  /*   productGroup: yup.string().required("Product group category is required") */
-  })
-
 
 // Define the schema using Yup
 export const signUpSchema = yup.object({
-  fullname: yup.string().required("Full name is required"),
-  phone: yup.string().required('Phone number is required'),
+  fullName: yup.string().required("Full name is required"),
   email: yup.string().email('Invalid email address').required('Email is required'),
  password: yup.string().min(6, " Password must have a minimum lenght of 6 characters ").max(12, "Passoword cannot exceed 12 characters").required("Password is required")
 })
 
 
 
-export const editProfileSchema = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
-  phone: yup.string().required('Phone number is required'),
-  email: yup.string().email('Invalid email address').required('Email is required'),
-  role: yup.string().required("User role is required"),
-  image: yup.string().required("User image is required")
- 
-})
 
 
 export const loginSchema = yup.object({
   email: yup.string().email('Invalid email address').required('Email is required'),
-  password: yup.string().required('Password is required')
+  password: yup.string().required('Password is required'),
+  
 })
 
 
@@ -86,8 +43,7 @@ export const changePasswordSchema = yup.object().shape({
 });
 
 
-export const banckSchema = yup.object().shape({
-  accountNumber: yup.string().length(10, 'Account number must be exactly 10 digits').required("Account number is required"),
-  accountName: yup.string().required("Account name is required"),
-  bankName: yup.string().required("Bank name is required")
+// Define the schema using Yup
+export const resetPasswordSchema = yup.object({
+  email: yup.string().email('Invalid email address').required('Email is required')
 })

@@ -1,5 +1,5 @@
 import LoginComp from "../../components/loginComp";
-
+import bankPic from "../../asssets/bankLogo2.jpg"
 
 
 
@@ -15,13 +15,13 @@ function Login() {
         <LoginComp />
       </div>
       <div className="h-screen hidden xl:w-1/2 lg:block ">
-      {/*   <image
-          src={"/images/loginPic.png"}
+        <img
+          src={bankPic}
           alt="login User"
           width={300}
           height={400}
           className="w-full h-full"
-        /> */}
+        />
       </div>
     </div>
   );

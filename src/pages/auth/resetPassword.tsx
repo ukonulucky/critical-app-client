@@ -1,7 +1,6 @@
 
-import React from "react";
 import ResetPasswordComp from "../../components/resetPasswordComp";
-
+import bankPic from "../../asssets/bankLogo2.jpg"
 function ResetPassword() {
 
 
@@ -13,13 +12,13 @@ function ResetPassword() {
         <ResetPasswordComp />
       </div>
       <div className="h-screen hidden xl:w-1/2 lg:block">
-       {/*  <image
-          src={"/images/resetPasswordPic.png"}
-          alt="login User"
+        <img
+          src={bankPic}
+          alt="reset password"
           width={300}
           height={400}
           className="w-full h-full"
-        /> */}
+        />
       </div>
     </div>
   );

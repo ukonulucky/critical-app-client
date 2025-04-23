@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -7,13 +7,14 @@ import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
 import { useAppDispatch } from '../redux/store/store'
 import LoadingScreen from './loadingScreen'
+import { resetPasswordSchema } from '../utils/yubValidation'
+import { useNavigate } from 'react-router-dom';
+import { sendUserEmailForPasswordResetApi } from '../apiServices/authApi'
+import { setUserEmailAction } from '../redux/slices/authSlice'
 
 
 
-// Define the schema using Yup
-const schema = yup.object({
-  email: yup.string().email('Invalid email address').required('Email is required')
-})
+
 
 // Define TypeScript types for form values
 interface IFormInput {
@@ -29,71 +30,9 @@ const ResetPasswordComp = () => {
   
   /* routing */
 
-/*   const router = useRouter() */
+  const navigate = useNavigate()
 
-    const [startApiCall, setStartApiCall] = useState(false)
-  
-    /* use mutation for forgotPassword */
-    /* sendUserEmailForPasswordResetApi */
-   /*  const sendUserEmailForPasswordResetMutation = useMutation({
-      mutationKey: ['sendUserEmailForPasswordResetKey'],
-      mutationFn: sendUserEmailForPasswordResetApi
-    }) */
-  
-    
-      /* obtain the different state for the loginApi response */
-    
-   /*    const { data: userResponseData, error, isError, isPending, isSuccess } =
-        sendUserEmailForPasswordResetMutation */
-  /*   
-      useEffect(() => {
-        if (isError && startApiCall) {
-          setLoader(false)
-          setStartApiCall(false)
-          let errorMessage
-          if (error instanceof AxiosError &&  error?.response) {
-            errorMessage = error?.response.data.message
-          } else {
-            errorMessage = error?.message
-          }
-    
-        toast.error(errorMessage)
-          return
-        }
-    
-        if (isPending && startApiCall) {
-          setLoader(true)
-        }
-    
-        if (isSuccess && startApiCall) {
-          console.log("this is the response", userResponseData)
-  
-    
-          setLoader(false)
-          setStartApiCall(false)
-          dispatch(setUserEmailAction({ userEmail: form.email }))
-          router.push("/forgetPasswordVerification")
-          
-        }
-      }, [isError, isPending, isSuccess, startApiCall])
-    
- */
-   /*  console.log(
-      'response data',
-      data,
-      'isError:',
-      isError,
-      'isPending:',
-      isPending,
-      'isSuccess:',
-      isSuccess,
-      'errorMessage:',
-      error?.message,
-      'startapiCall:',
-      startApiCall
-    )
-   */
-    
+ 
   
     const [form, setForm] = useState<{
       email: string
@@ -105,17 +44,39 @@ const ResetPasswordComp = () => {
 
   
     const onSubmit = async (data: { email: string }) => {
-      try {
+        try {
+          
+            
         setForm({
           email: data.email
         })
-        setLoader(!loader)
-        setStartApiCall(!startApiCall)
+            setLoader(!loader)
+            const { status, message, data:userData} = await sendUserEmailForPasswordResetApi(data)
+       
+            if (status === "success") { 
+                // set user email and token
+
+            
+                dispatch(setUserEmailAction({userEmail: userData.userEmail}))
+                navigate("/auth/verifyCode")
+                toast.success(message)
+            }
         /* make api call for user signUp */
-        console.log('this is data new', data)
-       /*  await sendUserEmailForPasswordResetMutation.mutateAsync(data) */
-      } catch (error: any) {
-        console.log(error.message)
+      
+     
+        } catch (error) {
+            setLoader(!loader)
+                  let errorMessage;
+                  if (error instanceof AxiosError && error?.response) {
+                    errorMessage = error?.response.data.message
+                  } else if (error instanceof Error) {
+                    errorMessage = error.message
+                   
+                  } else { 
+                    errorMessage = "Unknown Error";
+                  }
+                    toast.error(errorMessage)
+      
       } finally {
         setLoader(false)
       }
@@ -124,7 +85,7 @@ const ResetPasswordComp = () => {
 
   // Initialize the form with react-hook-form and Yup resolver
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(resetPasswordSchema),
   })
 
   
@@ -135,21 +96,7 @@ const ResetPasswordComp = () => {
       }
       <div className=" flex flex-row items-center space-x-2 ">
         <div>
-      {/*   <Image
-        src={"/images/logo.png"}
-        width={30}
-        height={31}
-          alt='quible logo'
-        />
-    </div>
-        <div>
-        <Image
-        src={"/images/Quible.png"}
-        width={77}
-        height={18.7}
-       alt='quible log'
-    
-      /> */}
+     
       </div>
       </div>
       <div className="text-gray-900 text-[26px] font-semibold font-['Inter'] leading-[35.10px] mt-12">Reset Password</div>

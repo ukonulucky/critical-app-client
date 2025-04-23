@@ -2,13 +2,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginApi } from "../apiServices/authApi";
+import { loginApi, registerApi } from "../apiServices/authApi";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { loginSchema } from "../utils/yubValidation";
 import { useAppDispatch } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
 import EmailNotVerifiedModal from "./EmailVerificationModel";
+import { AxiosError } from "axios";
 
 
 
@@ -23,7 +24,6 @@ const LoginComp = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<IFormInput>({
     resolver: yupResolver(loginSchema),
@@ -32,9 +32,7 @@ const LoginComp = () => {
   /* dispatch a function for the store */
   const dispatch = useAppDispatch();
 
-  /* control fetching of stores */
-
-  const [fetchStores, setFetchStores] = useState(false);
+  
 
   /* show modal when email is not verified */
 
@@ -49,201 +47,37 @@ const LoginComp = () => {
 
   /* set the display of the loader */
   const [loader, setLoader] = useState(false);
-
-  /* start api call */
-  const [startApiCall, setStartApiCall] = useState(false);
-
-/*   const signInMutation = useMutation({
-    mutationKey: ["signIn"],
-    mutationFn: loginApi,
-  }); */
-
-  /*   get all stores associated in user email */
-
- /*  const storeMutation = useMutation({
-    mutationKey: ["get-store"],
-    mutationFn: getStoreApi,
-  }); */
-
-  /* obtain the different state for the loginApi response */
-
-/*   const {
-    data: userResponse,
-    error,
-    isError,
-    isPending,
-    isSuccess,
-  } = signInMutation; */
-
-  /* useEffect for responding to diffrent response from the user signin */
-/* 
-  useEffect(() => {
-    if (isError && startApiCall) {
-      setLoader(false);
-      let errorMessage;
-      if (error instanceof AxiosError && error?.response) {
-        errorMessage = error?.response.data.message;
-      } else {
-        errorMessage = error?.message;
-      }
-
-      toast.error(errorMessage);
-      setStartApiCall(false);
-      setLoader(false);
-
-      return;
-    }
-
-    if (isPending && startApiCall) {
-      setLoader(true);
-    }
-
-    if (isSuccess && startApiCall) {
-   
-      if (!userResponse.data.user.email_verified) {
-        setUserEmail(userResponse.data.user.email);
-
-        setUserToken(userResponse.data.token);
-        setShowVerifyEmailModel(true);
-        setLoader(false);
-        setStartApiCall(false);
-        return;
-      }
-
-      setStartApiCall(false);
-      const token = userResponse.data.token;
-
-  
-      const { fullname, email, phone, role, image} = userResponse.data.user
-      
-      dispatch(setUserBioAction({
-        firstName: fullname.split(" ")[0],
-        lastName: fullname.split(" ")[1] || "",
-        phoneNumber: phone,
-        token,
-        userEmail: email,
-        userImage: image || "",
-        role,
-      }))
-      fetchStoreFunc(token);
-    }
-  }, [isError, isPending, isSuccess, startApiCall]);
- */
   // Define the form submission handler
 
   const onSubmit = async (data: { email: string; password: string }) => {
-    try {
+      try {
+      
+          setLoader(!loader)
+          const { status, message } = await loginApi(data);
       setLoader(!loader);
-      setStartApiCall(true);
-      /* make api call for user signUp */
+          if (status === "success") { 
+              toast.success(message)
+          }
+       
 
-/*       await signInMutation.mutateAsync(data); */
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      setLoader(false);
-    }
-  };
-
-/*   const {
-    data: storeResponse,
-    isError: storeIsError,
-    isPending: storeIsPending,
-    isSuccess: storeIsSuccess,
-    error: storeError,
-  } = storeMutation; */
-
-  /* useEffect for responding to fetching of stores */
-
-/*   useEffect(() => {
-    if (storeIsError && fetchStores) {
-      let errorMessage;
-      if (error instanceof AxiosError && error?.response) {
-        errorMessage = error?.response.data.message;
-      } else {
-        errorMessage = error?.message;
-      }
-
-      toast.error(errorMessage);
-      setFetchStores(false);
-      setLoader(false);
-
-      return;
-    }
-
-    if (storeIsPending && fetchStores) {
-      setLoader(true);
-    }
-
-    if (storeIsSuccess && fetchStores) {
-      if (storeResponse.data.stores.docs.length === 0) {
-        setLoader(false);
-        Cookies.set("adminToken", userToken);
-        setFetchStores(false);
-        const storeEmail = getValues("email");
-
-        if (typeof window !== "undefined") {
-          localStorage.setItem("userData", JSON.stringify(storeEmail));
+      } catch (error) {
+          setLoader(!loader)
+        let errorMessage;
+        if (error instanceof AxiosError && error?.response) {
+          errorMessage = error?.response.data.message
+        } else if (error instanceof Error) {
+          errorMessage = error.message
+         
+        } else { 
+          errorMessage = "Unknown Error";
         }
-
-        router.push("/registerStore");
-        return;
-      }
-
-      const { address, description, image, name, phone, _id, user } =
-        storeResponse.data.stores.docs[0];
-
-      const storeData = {
-        address,
-        description,
-        image,
-        name,
-        phone,
-        store_id: _id,
-        user,
-      };
-      if (typeof window !== "undefined") {
-        localStorage.setItem("store", JSON.stringify(storeData));
-      }
-
-      dispatch(
-        addStoreData({
-          address,
-          description,
-          image,
-          name,
-          phone,
-          store_id: _id,
-          user,
-        })
-      );
-      Cookies.set("adminToken", userToken, {
-        expires: 7,
-      });
-      Cookies.set("storeId", _id, {
-        expires: 7,
-      });
-      setLoader(false);
-      setFetchStores(false);
-      router.push("/admin/storeDashboard");
-      toast.success("User Logged in successfully");
-    }
-  }, [storeIsError, storeIsPending, storeIsSuccess, fetchStores]);
- */
-  /* make apicall to fetch stres */
-
-  const fetchStoreFunc = async (id: string) => {
-    try {
-      /* make api call to fetch stores */
-      setUserToken(id);
-      setFetchStores(true);
-     // await storeMutation.mutateAsync({ jwtToken: id });
-    } catch (error: any) {
-      console.log(error.message);
+          toast.error(errorMessage)
+      
     } finally {
       setLoader(false);
     }
   };
+
 
   return (
     <div className="flex flex-col ">
@@ -258,29 +92,14 @@ const LoginComp = () => {
         />
       )}
       <div className=" flex flex-row items-center space-x-2">
-        <div>
-        {/*   <image
-            src={"/images/logo.png"}
-            width={30}
-            height={31}
-            alt="quible logo"
-          />
-        </div>
-        <div>
-          <image
-            src={"/images/Quible.png"}
-            width={77}
-            height={18.7}
-            alt="quible log"
-          /> */}
-        </div>
+
       </div>
       <div className="text-gray-900 text-[26px] font-semibold font-['Inter'] mt-4 leading-[35.10px]">
         Sign in to continue
       </div>
 
       <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-[18.90px]">
-        Sign in to your Quible account
+        Sign in to your SmartTechBank
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 w-full">
@@ -318,7 +137,7 @@ const LoginComp = () => {
 
         <div className="mt-2">
           <a
-            href={"/resetpassword"}
+            href={"/auth/resetPassword"}
             className="text-blue-950 text-sm font-semibold font-['Inter'] leading-[18.90px] "
           >
             Reset password
@@ -338,9 +157,9 @@ const LoginComp = () => {
 
       <div className="flex flex-row items-center mt-3 w-full justify-center space-x-1">
         <p className="text-slate-700/opacity-60 text-sm font-medium font-['Inter'] leading-[18px]">
-          New to Qstore?
+          New to SmartTechBank?
         </p>
-        <a href={"/signUp"}>
+        <a href={"/auth/register"}>
           <p className="text-blue-950 text-sm font-semibold font-['Inter'] leading-[18.90px]">
             Register user
           </p>

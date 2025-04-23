@@ -22,6 +22,9 @@ function App() {
     }
   }
   return (
+   
+
+   
     <BrowserRouter>
      <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
@@ -54,7 +57,8 @@ function App() {
           <Route path="*" element={<NotFound />}/>
       </Routes>
     </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    
   );
 }
 

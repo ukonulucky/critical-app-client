@@ -43,212 +43,41 @@ export default function ForgotPasswordVerificationComp() {
     
     const [counterKey, setCounterKey] = useState(1)
    
-  /* start   useMutation*/
-
-
-/*   const sendUserEmailForPasswordReset = useMutation({
-    mutationKey: ['sendUserEmailPasswordResetKey'],
-    mutationFn: sendUserEmailForPasswordResetApi
-  }) */
- /*  const sendEmailVerificationMutation = useMutation({
-    mutationKey: ['sendVerificationEmaiKey'],
-    mutationFn: sendVerificationEmailApi
-  }) */
 
 
 
 
 
-  /* const {
-    data: userResponse,
-    error,
-    isError,
-    isPending,
-    isSuccess
-  } =  sendUserEmailForPasswordReset */
-
-  /* make a call to the server demanding for email sending to user for verification */
 
 
 
-  type errorType = {
-    response: {
-      data: {
-        message: string
-      }
-    }
-  }
-
-/*   useEffect(() => {
-    if (isError && startEmailVerificationApi) {
-      setLoader(false)
-      let errorMessage
-      if (error instanceof AxiosError) { 
-        if ( error?.response) {
-          errorMessage = error?.response.data.message
-        } else {
-          errorMessage = error?.message
-        }
-      }
-
-      toast.error(errorMessage)
-      
-      setLoader(false)
-      setStartEmailVerificationApi(false)
-
-      return
-    }
-
-    if (isPending && startEmailVerificationApi) {
-      setLoader(true)
-    }
-
-    if (isSuccess && startEmailVerificationApi) {
-      dispatch(setUserEmailAndTokenAction({
-        token: "123456",
-        userEmail: userProfileState.userEmail
-      }))
-      setCounterKey(counterKey + 1)
-      toast.success(userResponse.message)
-      setLoader(false)
-      setStartEmailVerificationApi(false)
-    }
-  }, [isError, isPending, isSuccess, startEmailVerificationApi])
- */
-  /* display of useMuation states for sending mail */
- 
-
-
-  /* make apicall to send email verification */
-/*   useEffect(() => {
-    ; (async () => {
-      try {
-        setStartEmailVerificationApi(true)
-        await sendUserEmailForPasswordReset.mutateAsync({
-          email:userProfileState.userEmail
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [resentMail])
-
- */
-  /* mutation to send four digit token for verification */
-
-
- /* start  useMutation to verify the users otp pin */
-
- /* const verifyUserPasswordResetTokenMutation = useMutation({
-    mutationKey: ['verifyUserPasswordResetToken'],
-    mutationFn: verifyUserPasswordResetTokenApi
-  }) */
-  
-  
-  
-  /*   const {
-      data: tokenVerificationData,
-      error: tokenVerificationError,
-      isError: tokeVerificationIsError,
-      isPending: tokeVerificationIsPending,
-      isSuccess: tokenVerificationIsSuccess
-    } = verifyUserPasswordResetTokenMutation
-     */
-     
-   /*  useEffect(() => {
-      if (tokeVerificationIsError && startApiCall) {
-          setLoader(false)
-          setStartApiCall(false)
-        let errorMessage
-        if ( tokenVerificationError instanceof AxiosError && tokenVerificationError?.response) {
-          errorMessage = tokenVerificationError?.response.data.message
-        } else {
-          errorMessage = tokenVerificationError?.message
-        }
-      toast.error(errorMessage)
-     
-  
-        return
-      }
-  
-      if (tokeVerificationIsPending && startApiCall) {
-        setLoader(true)
-      }
-  
-      if (tokenVerificationIsSuccess && startApiCall) {
-        setLoader(false)
-          setStartApiCall(false)
-          toast.success(tokenVerificationData.message)
-          router.push("/changepassword")
-   
-      }
-    }, [
-      startApiCall,
-      tokeVerificationIsPending,
-      tokeVerificationIsError,
-      tokenVerificationIsSuccess
-    ])
-    */ 
     
-  /* 
-    const handleSubmit = async () => {
-        try {
-       
-            setLoader(!loader)
-            setStartApiCall(!startApiCall)
-            await verifyUserPasswordResetTokenMutation.mutateAsync({
-                token: '123456',
-                email: userProfileState.userEmail
-            })
-        } catch (error: any) {
-            console.log(error.message)
-        } finally { 
-            setLoader(false)
-        }
-    } */
-  
-    
-    return <div className='flex flex-col '>
+    return <div className='flex flex-col'>
       {
       loader && <LoadingScreen />
       }
-  <div className=" flex flex-row items-center space-x-2 ">
-    <div>
-  {/*   <Image
-    src={"/images/logo.png"}
-    width={30}
-    height={31}
-      alt='quible logo'
-    /> */}
-</div>
-    <div>
-   {/*  <Image
-    src={"/images/Quible.png"}
-    width={77}
-    height={18.7}
-   alt='quible log'
-
-  /> */}
-  </div>
-  </div>
+ 
   <p className="text-gray-900 text-[26px] font-semibold font-['Inter'] leading-[35.10px] mt-12">Verify Code</p>
 
      <p className="text-gray-500 text-sm font-normal font-['Inter'] leading-[18.90px]">
        {/*   Please enter the code we just sent to email { userProfileState.userEmail } */}
   </p>
 
-      <div className='mt-6'>   
+      <div className='mt-6 '>   
    
       <OTPInput
              shouldAutoFocus={true}
              onChange={(data: any) => {
                  setOtp(data)
              }}
+                skipDefaultStyles={true}
+              
              value={otp}
-             inputStyle="inputStyle"
+             inputStyle="w-12 h-12 border border-gray-300 rounded-md text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
              numInputs={5}
-             renderSeparator={<span className='w-4 h-4'></span>} 
-             renderInput={(props) => <input  maxLength={1}   {...props}  />}  
+             renderSeparator={<span className='w-4 h-4 '></span>} 
+                renderInput={(props) => <input maxLength={1}   {...props} />} 
+                
              inputType="tel"
            
          />  

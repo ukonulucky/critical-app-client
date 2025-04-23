@@ -1,6 +1,6 @@
 
-import React from 'react'
 import VerifyCodeComp from '../../components/verifyCodeComp'
+import bankPic from "../../asssets/bankLogo2.jpg"
 
 function VerifyCode() {
 
@@ -12,13 +12,13 @@ function VerifyCode() {
             <VerifyCodeComp />
           </div>
           <div className="h-screen hidden xl:w-1/2 lg:block ">
-          {/*   <image
-              src={"/images/loginPic.png"}
+            <img
+              src={bankPic}
               alt="login User"
               width={300}
               height={400}
               className="w-full h-full"
-            /> */}
+            />
           </div>
         </div>
     )
