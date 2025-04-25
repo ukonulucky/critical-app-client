@@ -25,7 +25,7 @@ function CheckAuth({
         (location.pathname.includes("/auth/login") || location.pathname.includes("/auth/register"))
     ) {
         if (user.role === "admin") {
-        return   <Navigate to="/admin/dashboard" />
+        return   <Navigate to="/welcomePage" />
         } else { 
          return  <Navigate to="/shop/home" />
         }

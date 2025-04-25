@@ -56,10 +56,10 @@ const ResetPasswordComp = () => {
             if (status === "success") { 
                 // set user email and token
 
-            
+                toast.success(message)
                 dispatch(setUserEmailAction({userEmail: userData.userEmail}))
                 navigate("/auth/verifyCode")
-                toast.success(message)
+              
             }
         /* make api call for user signUp */
       

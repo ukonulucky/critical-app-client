@@ -1,5 +1,8 @@
 import ChangePasswordComp from "../../components/changePasswordComp";
 import bankPic from "../../asssets/bankLogo2.jpg"
+import bankPic2 from "../../asssets/passwordPic.webp"
+import bankPic3 from "../../asssets/passwordPic2.jpg"
+
 function ChangePassword() {
 
   return (

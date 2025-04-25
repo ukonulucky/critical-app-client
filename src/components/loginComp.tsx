@@ -10,6 +10,8 @@ import { useAppDispatch } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
 import EmailNotVerifiedModal from "./EmailVerificationModel";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { setIsAuthenticated, setUserBioAction } from "../redux/slices/authSlice";
 
 
 
@@ -32,7 +34,7 @@ const LoginComp = () => {
   /* dispatch a function for the store */
   const dispatch = useAppDispatch();
 
-  
+  const navigate = useNavigate()
 
   /* show modal when email is not verified */
 
@@ -53,10 +55,29 @@ const LoginComp = () => {
       try {
       
           setLoader(!loader)
-          const { status, message } = await loginApi(data);
+        const { status, message, user: { 
+          fullName,
+          email,
+          phone,
+          role,
+          url,
+          status: userStatus }, user,token } = await loginApi(data);
+      
       setLoader(!loader);
           if (status === "success") { 
-              toast.success(message)
+            toast.success(message)
+            dispatch(setUserBioAction({
+              fullName,
+              phoneNumber: phone,
+              role,
+              status:userStatus,
+              token,
+              url,
+              userEmail: email
+            }))
+            dispatch(setIsAuthenticated(true))
+            console.log("code ren here 22")
+            navigate("/welcome")
           }
        
 

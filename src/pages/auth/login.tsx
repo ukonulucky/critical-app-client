@@ -1,5 +1,6 @@
 import LoginComp from "../../components/loginComp";
 import bankPic from "../../asssets/bankLogo2.jpg"
+import Navbar from "../../components/Navbar";
 
 
 
@@ -9,6 +10,8 @@ function Login() {
 
   return (
     <div className="w-screen h-screen  flex flex-row">
+     
+    
       <div
         className="w-full xl:w-1/2 h-screen flex justify-center items-center px-4"
       >

@@ -1,9 +1,14 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import HomePageComp from '../components/homeComp'
 
 function HomePage() {
   return (
-      <div>
-          <p>This is the home page</p>
+    <div>
+        <Navbar />
+         <HomePageComp />
+      <Footer />
     </div>
   )
 }

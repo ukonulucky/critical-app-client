@@ -79,23 +79,53 @@ export const verifyUserPasswordResetTokenApi = async (data: {
 /* Reset the user password */
 export const resetUserPasswordApi = async (data: {
   email: string
-  token: string
   password: string
 }) => {
   const response = await axios.post(`${baseUrl}/user/reset-password`, data)
   return response.data
 }
 
+
+// send apicall to send user phone number an OTP
+
+export const sendUserPhoneApi = async (data: {
+  phone: string,
+  token: string
+}) => {
+  const response = await axios.post(`${baseUrl}/user/registerPhone`, data, {
+    headers: {
+      "Authorization": `Bearer ${data.token}`
+    }
+  })
+  return response.data
+}
+
+// verify otp sent to users phone
+export const verifyUserPhoneOtp = async (data: {
+  OTP: string,
+  token: string
+}) => {
+  const response = await axios.post(`${baseUrl}/user/verifyPhone`, data, {
+    headers: {
+      "Authorization": `Bearer ${data.token}`
+    }
+  })
+  return response.data
+}
+
+
 /* logout user */
 
-export const logOutUserApi = async () => {
+export const logOutUserApi = async (data: {
+  jwtToken: string
+ }) => {
   console.log("ran here from logout func")
   const jwtToken = Cookies.get("adminToken");
 
 
   const response = await axios.get(`${baseUrl}/user/logout`, {
     headers: {
-      Authorization: `Bearer ${jwtToken}`
+      Authorization: `Bearer ${data.jwtToken}`
     }
   })
   return response.data

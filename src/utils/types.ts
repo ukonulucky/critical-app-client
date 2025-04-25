@@ -346,14 +346,16 @@ export type  registerStoreFormType =  {
     storeAddress: string
 } 
   
+
+
 export type userBioType = {
     userEmail: string,
     token: string,
     phoneNumber: string,
-    firstName: string,
-    lastName: string,
-    userImage: string,
-    role: string
+   fullName: string
+    role: string,
+    url: string,
+    status: string
 }
 
 
@@ -394,7 +396,7 @@ export type initialAppStateType = {
 
 export type checkAuthType = {
     isAuthenticated: boolean,
-    user: userType,
+    user: userBioType,
     children: React.ReactNode
 }
 
@@ -423,3 +425,10 @@ export type commonFormType = {
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
     buttonText: string
 }
+
+
+export type WelcomeDashboardProps = {
+    userName: string;
+    email: string;
+    onVerifyPhone: () => void;
+  }

@@ -5,19 +5,21 @@ import { userBioType } from "../../utils/types"
 
 const initialState: {
     userProfile: userBioType,
-    loading: boolean
+    loading: boolean,
+    isAuthenticated: boolean
     
 } = {
     userProfile: {
-        userEmail: "",
-        phoneNumber: "",
-        firstName: "",
-        lastName: "",
-        userImage: "", 
-        role: "",
-        token: ""
+       userEmail: "",
+    token: "",
+    phoneNumber: "",
+    fullName: "",
+    role: "",
+    url: "",
+    status: ""
     },
-    loading: false
+    loading: false,
+    isAuthenticated: false
    
 }
 
@@ -34,12 +36,18 @@ const authSlice = createSlice({
             state.userProfile.userEmail =  action.payload.userEmail
         },
         setUserBioAction: (state, action: PayloadAction <userBioType>) => { 
+            console.log("set user bio ran")
+            
             state.userProfile = {
-             ...state.userProfile,   ...action.payload
+                ...state.userProfile,
+            ...action.payload
             }
         },
         setGlobalAppLoaderAction: (state, action: PayloadAction<boolean>) => { 
             state.loading = action.payload
+        },
+        setIsAuthenticated: (state, action: PayloadAction<boolean>) => { 
+          state.isAuthenticated = action.payload
         }
 
       
@@ -50,7 +58,9 @@ const authSlice = createSlice({
 
 
 
-export const {setUserEmailAndTokenAction, setUserEmailAction,  setUserBioAction,  setGlobalAppLoaderAction} =  authSlice.actions
+export const { setUserEmailAndTokenAction, setUserEmailAction, setUserBioAction, setGlobalAppLoaderAction,
+    setIsAuthenticated
+} =  authSlice.actions
 
 
 export const authReducer = authSlice.reducer

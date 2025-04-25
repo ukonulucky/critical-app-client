@@ -5,11 +5,11 @@ import { AxiosError } from "axios";
 import { useAppSelector } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
 import CountDownTimer from "./countDownTimer";
-import { sendUserEmailForPasswordResetApi, verifyUserPasswordResetTokenApi } from "../apiServices/authApi";
+import { verifyUserPhoneOtp } from "../apiServices/authApi";
 import {  useNavigate } from "react-router-dom";
 
 
-export default function VerifyCodeComp() {
+export default function VerifyPhoneCodeComp() {
   /* get data from the store */
 
   const userProfileState = useAppSelector(
@@ -36,41 +36,9 @@ export default function VerifyCodeComp() {
 
 
  
-  console.log("resendEmail:", resentMail,"otp value", otp);
+ 
   /* make apicall to send email verification */
-  useEffect(() => {
-    (async () => {
-     if(!resentMail) return
-      try {
-        if (!userProfileState.userEmail) {
-          toast.error("Email not found, failed to send email");
-          return;
-        }
-      setLoader(!loader)
-        const { status, message, data: userData } = await sendUserEmailForPasswordResetApi({email: userProfileState.userEmail})
-            
-                 if (status === "success") { 
-                     toast.success(message)
-                 }
-        
-
-      } catch (error) {
-       setLoader(!loader)
-                        let errorMessage;
-                        if (error instanceof AxiosError && error?.response) {
-                          errorMessage = error?.response.data.message
-                        } else if (error instanceof Error) {
-                          errorMessage = error.message
-                         
-                        } else { 
-                          errorMessage = "Unknown Error";
-                        }
-                          toast.error(errorMessage)
-      } finally {
-        setLoader(false);
-      }
-    })();
-  }, [resentMail]);
+ 
 
 
   
@@ -78,17 +46,17 @@ export default function VerifyCodeComp() {
  
   const handleSubmit = async () => {
     try {
-console.log("inputed data", otp, userProfileState.userEmail)
+
       if (!userProfileState.userEmail) throw new Error("user email is required")
       setLoader(!loader);
    
-      const { status,message } = await verifyUserPasswordResetTokenApi({
-        email: userProfileState.userEmail,
-        token: otp
+      const { status,message } = await verifyUserPhoneOtp({
+        OTP: otp,
+        token: userProfileState.token
       })
       if (status === "success") { 
         toast.success(message)
-        navigate("/auth/changePassword")
+       /*  navigate("/auth/changePassword") */
       }
      
          setLoader(!loader)
@@ -118,11 +86,11 @@ console.log("inputed data", otp, userProfileState.userEmail)
         </div>
       </div>
       <p className="text-gray-900 text-[26px] font-semibold font-['Inter'] leading-[35.10px] mt-12">
-        Verify Code
+        Verify Phone OTP Code
       </p>
 
       <p className="text-gray-500 text-sm font-normal font-['Inter'] leading-[18.90px]">
-        Please enter the code we just sent to {userProfileState.userEmail}
+        Please enter the code we just sent to {userProfileState?.phoneNumber}
       </p>
 
       <div className="mt-6">

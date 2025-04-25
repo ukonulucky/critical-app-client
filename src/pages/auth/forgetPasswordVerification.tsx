@@ -1,5 +1,5 @@
 
-import ForgotPasswordVerificationComp from '../../components/forgotPasswordVerificationComp'
+import ForgotPasswordVerificationComp from '../../components/VerifyPhoneCodeComp'
 import bankPic from "../../asssets/bankLogo2.jpg"
 function ForgetPasswordVerification() {
    

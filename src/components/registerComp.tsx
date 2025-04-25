@@ -7,6 +7,7 @@ import { useAppDispatch } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import Flag from 'react-world-flags';
 
 
 
@@ -15,7 +16,8 @@ import { toast } from "react-toastify";
 interface IFormInput {
     email: string;
     password: string;
-    fullName: string
+  fullName: string,
+  phone: string
 }
 
 const RegisterComp = () => {
@@ -55,10 +57,9 @@ const RegisterComp = () => {
     try {
       setLoader(!loader);
       /* make api call for user signUp */
-      console.log("input data: ", data)
+     
         const response = await registerApi(data)
-      console.log("input data: ", data)
-      console.log("input response", response)
+   
       setLoader(!loader);
       toast.success(response.message)
     } catch (error) {
@@ -140,6 +141,26 @@ const RegisterComp = () => {
           />
           <p className="text-red-700 text-sm font-medium font-['Inter'] leading-[18px] mt-4">
             {errors.password?.message}
+          </p>
+        </div>
+
+        <div className="flex flex-col space-y-1 mt-2">
+          <label className="text-slate-700 text-sm font-medium font-['Inter'] leading-[18px]">
+            Phone number
+          </label>
+          <div className="rounded-lg shadow border border-gray-300 flex flex-row  items-center h-[39px] w-[328px] mt-4 px-2">
+          <Flag code="GB" style={{ width: '20px', height: '40px' }}  />
+          <input
+            type="number"
+            {...register("phone")}
+            placeholder="+44709494334"
+            className="text-slate-700 text-sm font-medium font-['Inter'] leading-[18px]
+            flex-1 h-[33px] px-2.5 py-2.5 bg-white border-none overflow-hidden  justify-start items-center focus:outline-none focus:border-none  no-spinner
+            "
+          />
+         </div>
+          <p className="text-red-700 text-sm font-medium font-['Inter'] leading-[18px] mt-4">
+            {errors.phone?.message}
           </p>
         </div>
 

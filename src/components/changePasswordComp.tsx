@@ -5,15 +5,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { SlEye } from "react-icons/sl";
+import { FaBeer } from 'react-icons/fa';
 
 
 
-/* import { useMutation } from "@tanstack/react-query";
-import { resetUserPasswordApi } from "@/apiServices/authApi"; */
+/* import { useMutation } from "@tanstack/react-query"; */
+
 import { toast } from "react-toastify";
 
 import { AxiosError } from "axios";
 import LoadingScreen from "./loadingScreen";
+import { useAppSelector } from "../redux/store/store";
+import { resetUserPasswordApi } from "../apiServices/authApi";
+import { useNavigate } from "react-router-dom";
 
 // Define the schema using Yup
 const schema = yup.object({
@@ -31,11 +35,13 @@ interface IFormInput {
 }
 
 const ChangePasswordComp = () => {
-  /* userProfile data */
-  /* const userProfile = useAppSelector((state) => state.authReducer.userProfile);
- */
+
+  const userProfile = useAppSelector((state) => state.authReducer.userProfile);
+
   const [loader, setLoader] = useState(false);
 
+
+  const navigate = useNavigate()
   /* routing */
 
 /*   const router = useRouter(); */
@@ -61,6 +67,41 @@ const ChangePasswordComp = () => {
  
 
  
+     const onSubmit = async (data: IFormInput) => {
+         try {
+           const { newPassword } = data
+           setLoader(!loader)
+           const { status, message} = await resetUserPasswordApi({
+             email: userProfile.userEmail,
+             password: newPassword
+           })
+      setLoader(!loader)
+           if (!status) { 
+               throw new Error("Failed to change password")
+           }
+           navigate("/auth/login")
+           toast.success(message)
+               
+             }
+         /* make api call for user signUp */
+        catch (error) {
+             setLoader(!loader)
+                   let errorMessage;
+                   if (error instanceof AxiosError && error?.response) {
+                     errorMessage = error?.response.data.message
+                   } else if (error instanceof Error) {
+                     errorMessage = error.message
+                    
+                   } else { 
+                     errorMessage = "Unknown Error";
+                   }
+                     toast.error(errorMessage)
+       
+       } finally {
+         setLoader(false)
+       }
+     }
+   
 
   return (
     <div className="flex flex-col ">
@@ -75,7 +116,7 @@ const ChangePasswordComp = () => {
         Set a new password for your account
       </p>
 
-      <form  className="mt-6 w-full">
+      <form  className="mt-6 w-full" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-1">
           <label className="text-slate-700 text-sm font-medium font-['Inter'] leading-[18px]">
             Password
@@ -87,13 +128,15 @@ const ChangePasswordComp = () => {
               placeholder="**********"
               className="text-slate-700 text-sm font-medium font-['Inter'] leading-[18px] h-full focus:border-transparent focus:outline-none
             flex-1"
-            />
+                      />
+                   
             <div
               onClick={() => {
                 setshowPassword(!showPassword);
               }}
             >
-             {/*  {showPassword ? <SlEye /> : <RiEyeCloseLine />} */}
+                          {showPassword ? <>{SlEye({})}</> : <>{RiEyeCloseLine({})}</>}
+                         
             </div>
           </div>
           <p className="text-red-700 text-sm font-medium font-['Inter'] leading-[18px] mt-4">
@@ -118,9 +161,7 @@ const ChangePasswordComp = () => {
                 setshowConfirmPassword(!showConfirmPassword);
               }}
             >
-                         {/*  {
-                              showPassword ? <SlEye /> : <RiEyeCloseLine />
-                          } */}
+                        {showConfirmPassword ? <>{SlEye({})}</> : <>{RiEyeCloseLine({})}</>}
 
             </div>
           </div>
