@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { createTransferPinCompType } from "../utils/types";
 
 
 
@@ -18,7 +19,12 @@ interface IFormInput {
 transferPin: string
 }
 
-const CreateTransferPinComp = () => {
+const CreateTransferPinComp = ({ 
+  setShowModal,
+  setShowVerifyPinModal,
+  showModal,
+  showVerifyPinModal
+}:createTransferPinCompType) => {
   // Initialize the form with react-hook-form and Yup resolver
   const {
     register,
@@ -39,9 +45,6 @@ const CreateTransferPinComp = () => {
   const jwtToken =  useAppSelector(state => state.authReducer.userProfile.token)
  
 
-
-  console.log("jwtToke: ", jwtToken)
-
   /* set the display of the loader */
   const [loader, setLoader] = useState(false);
   // Define the form submission handler
@@ -58,6 +61,8 @@ const CreateTransferPinComp = () => {
         setLoader(!loader);
             if (status === "success") { 
               toast.success(message)
+              setShowModal(!showModal)
+              setShowVerifyPinModal(!showVerifyPinModal)
               }
  
   
@@ -78,16 +83,10 @@ const CreateTransferPinComp = () => {
         setLoader(false);
       }
     };
-  
-
 
   return (
     <div className="flex flex-col ">
  {loader && <LoadingScreen />}
-
-     
-      
-
       <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-[18.90px]">
        Create Four Digit Transfer Pin
       </div>

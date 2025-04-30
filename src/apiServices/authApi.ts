@@ -151,6 +151,37 @@ export const createTranferPinUserApi = async (data: {
 }
 
 
+// verify user transfer pin
+export const verifyTranferPinUserApi = async (data: {
+  jwtToken: string,
+  OTP: string
+ }) => {
+ console.log("DATA sent: ", data)
+  const response = await axios.post(`${baseUrl}/user/account/tranferPinVerify`, {
+   OTP: data.OTP
+  }, {
+    headers: {
+      Authorization: `Bearer ${data.jwtToken}`
+    }
+  })
+  return response.data
+}
+
+
+
+export const getAccountDetailsUserApi = async (data: {
+  jwtToken: string,
+ }) => {
+
+  const response = await axios.get(`${baseUrl}/user/account/details`, {
+    headers: {
+      Authorization: `Bearer ${data.jwtToken}`
+    }
+  })
+  return response.data
+}
+
+
 
 
 

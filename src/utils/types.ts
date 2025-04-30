@@ -449,3 +449,16 @@ export type transactionType = {
   amount: string;
   description: string;
 };
+
+
+export type createTransferPinCompType = {
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    showVerifyPinModal: boolean,
+    setShowVerifyPinModal: React.Dispatch<React.SetStateAction<boolean>>,
+}
+
+export type verifyTransferPinCodeCompType = {
+    showVerifyPinModal: boolean,
+    setShowVerifyPinModal: React.Dispatch<React.SetStateAction<boolean>>,
+}

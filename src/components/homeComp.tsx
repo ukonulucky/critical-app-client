@@ -6,10 +6,12 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { AnimatedModal } from './model';
 import CreateTransferPinComp from './createTransferPinForm';
+import VerifyTransferPinCodeComp from './verifyTransferPinCodeComp';
 
 const HomePageComp: React.FC = () => {
 
-  const [loader, setLoader] =useState(false)
+
+  const [showVerifyPinModal, setShowVerifyPinModal] = useState(false)
 const [showModal, setShowModal] = useState(false)
   const {
     fullName,
@@ -33,6 +35,8 @@ const [showModal, setShowModal] = useState(false)
     { id: 3, date: '2025-04-17', type: 'Debit', amount: '£120.00', description: 'Electricity Bill' },
   ];
 
+
+  console.log("show verify pin modal state:", showVerifyPinModal)
 
 
 
@@ -73,10 +77,31 @@ const [showModal, setShowModal] = useState(false)
         </div>
         <AnimatedModal
           isOpen={showModal}
-          onClose={() =>setShowModal(!showModal)}
+          onClose={() => { 
+            setShowModal(!showModal)
+          }}
         >
-        <CreateTransferPinComp />
+          <CreateTransferPinComp
+            setShowVerifyPinModal={setShowVerifyPinModal}
+            showVerifyPinModal={showVerifyPinModal}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
         </AnimatedModal>
+
+        
+        <AnimatedModal
+          isOpen={showVerifyPinModal}
+          onClose={() =>setShowVerifyPinModal(!showVerifyPinModal)}
+        >
+          <VerifyTransferPinCodeComp
+            setShowVerifyPinModal={setShowVerifyPinModal}
+            showVerifyPinModal={ showVerifyPinModal }
+          />
+        </AnimatedModal>
+       
+      
+
 
         {/* Transactions */}
         <div className="mt-4">
