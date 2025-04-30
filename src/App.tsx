@@ -63,9 +63,7 @@ function App() {
           <Route path="/auth/resetPassword" element={<ResetPassword />} />
           <Route path="/auth/passwordChangeSuccess" element={<PasswordChangeSuccess />}/>
           <Route path="/auth/verifyCode" element={<VerifyCode />} />
-
-          <Route path="/auth/verifyCode" element={<VerifyCode />} />
-          
+ 
           
           <Route path="/unauthenticated" element={<Unauthenticated />} />
           

@@ -431,4 +431,21 @@ export type WelcomeDashboardProps = {
     userName: string;
     email: string;
     onVerifyPhone: () => void;
-  }
+}
+  
+
+
+ export type accountType = {
+     accountNumber: string;
+     accountName: string;
+  accountType: string;
+  balance: number;
+};
+
+export type transactionType = {
+  id: number;
+  date: string;
+  type: 'Credit' | 'Debit';
+  amount: string;
+  description: string;
+};

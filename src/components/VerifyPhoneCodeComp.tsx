@@ -56,7 +56,7 @@ export default function VerifyPhoneCodeComp() {
       })
       if (status === "success") { 
         toast.success(message)
-       /*  navigate("/auth/changePassword") */
+        navigate("/home")
       }
      
          setLoader(!loader)

@@ -133,6 +133,23 @@ export const logOutUserApi = async (data: {
 
 
 
+///account/transferPinCreation
+
+export const createTranferPinUserApi = async (data: {
+  jwtToken: string,
+  transferPin: string
+ }) => {
+ 
+  const response = await axios.post(`${baseUrl}/user/account/transferPinCreation`, {
+   transferPin: data.transferPin
+  }, {
+    headers: {
+      Authorization: `Bearer ${data.jwtToken}`
+    }
+  })
+  return response.data
+}
+
 
 
 

@@ -10,11 +10,10 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
     "@types/react": "^19.1.1",
     "@types/react-dom": "^19.1.2",
     "axios": "^1.8.4",
-    "framer-motion": "^12.7.4",
+    "framer-motion": "^12.9.2",
     "js-cookie": "^3.0.5",
     "lottie-react": "^2.4.1",
     "react": "^19.1.0",
@@ -38,8 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3001 && electron .\""
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +60,9 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/react-world-flags": "^1.6.0",
-    "tailwindcss": "^3.4.17"
+    "concurrently": "^9.1.2",
+    "electron": "^36.0.0",
+    "tailwindcss": "^3.4.17",
+    "wait-on": "^8.0.3"
   }
 }

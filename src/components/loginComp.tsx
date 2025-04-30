@@ -4,14 +4,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginApi, registerApi } from "../apiServices/authApi";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { loginSchema } from "../utils/yubValidation";
 import { useAppDispatch } from "../redux/store/store";
 import LoadingScreen from "./loadingScreen";
-import EmailNotVerifiedModal from "./EmailVerificationModel";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { setIsAuthenticated, setUserBioAction } from "../redux/slices/authSlice";
+import { setAccountDetailsAction, setIsAuthenticated, setUserBioAction } from "../redux/slices/authSlice";
 
 
 
@@ -36,13 +34,6 @@ const LoginComp = () => {
 
   const navigate = useNavigate()
 
-  /* show modal when email is not verified */
-
-  const [showVerifyEmailModel, setShowVerifyEmailModel] = useState(false);
-
-  const [userEmail, setUserEmail] = useState("");
-
-  const [userToken, setUserToken] = useState("");
   /* for navigation */
 
  
@@ -55,12 +46,13 @@ const LoginComp = () => {
       try {
       
           setLoader(!loader)
-        const { status, message, user: { 
+        const { status,bankData, message, user: { 
           fullName,
           email,
           phone,
           role,
           url,
+          isPhoneVerified,
           status: userStatus }, user,token } = await loginApi(data);
       
       setLoader(!loader);
@@ -76,8 +68,21 @@ const LoginComp = () => {
               userEmail: email
             }))
             dispatch(setIsAuthenticated(true))
-            console.log("code ren here 22")
-            navigate("/welcome")
+            console.log("bankdata from client", bankData)
+            if (bankData && isPhoneVerified) { 
+
+             dispatch(setAccountDetailsAction({
+              accountName: bankData.accountName,
+              accountNumber: bankData.accountNumber,
+              accountType: "savings",
+              balance: bankData.balance
+            }))
+              navigate("/home")
+            }
+             else { 
+              navigate("/welcome")
+            }
+           
           }
        
 
@@ -104,14 +109,7 @@ const LoginComp = () => {
     <div className="flex flex-col ">
  {loader && <LoadingScreen />}
 
-      {showVerifyEmailModel && (
-        <EmailNotVerifiedModal
-          showVerifyEmailModel={showVerifyEmailModel}
-          setShowVerifyEmailModel={setShowVerifyEmailModel}
-          userEmail={userEmail}
-          userToken={userToken}
-        />
-      )}
+      
       <div className=" flex flex-row items-center space-x-2">
 
       </div>

@@ -1,12 +1,13 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { userBioType } from "../../utils/types"
+import { accountType, userBioType } from "../../utils/types"
 
 
 const initialState: {
     userProfile: userBioType,
     loading: boolean,
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+account: accountType
     
 } = {
     userProfile: {
@@ -19,7 +20,13 @@ const initialState: {
     status: ""
     },
     loading: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+    account: {
+        accountName: "",
+        accountNumber: "",
+        accountType: "",
+        balance: 0
+    }
    
 }
 
@@ -48,7 +55,11 @@ const authSlice = createSlice({
         },
         setIsAuthenticated: (state, action: PayloadAction<boolean>) => { 
           state.isAuthenticated = action.payload
+        },
+        setAccountDetailsAction: (state, action: PayloadAction<accountType>) => { 
+            state.account = action.payload
         }
+
 
       
     }
@@ -59,7 +70,7 @@ const authSlice = createSlice({
 
 
 export const { setUserEmailAndTokenAction, setUserEmailAction, setUserBioAction, setGlobalAppLoaderAction,
-    setIsAuthenticated
+    setIsAuthenticated, setAccountDetailsAction
 } =  authSlice.actions
 
 

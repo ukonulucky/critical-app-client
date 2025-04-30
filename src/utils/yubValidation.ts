@@ -22,6 +22,11 @@ export const loginSchema = yup.object({
   
 })
 
+export const transferPinSchema = yup.object({
+  transferPin: yup.string().max(4, "can't exceed 4 digits").required('Transfer pin is required'),
+  
+})
+
 
 export const registerStoreSchema = yup.object({
   storeName: yup.string().required("Store name is required"),
